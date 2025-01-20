@@ -1,0 +1,27 @@
+# AutoGen Studio Dockerized Deployment
+# This Dockerfile sets up and runs AutoGen Studio, serving its UI on http://localhost:8080.
+
+# Use a lightweight Python 3.9 base image
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy all files from the current directory to the container's /app directory
+COPY . /app
+
+# Install dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional packages for AutoGen Studio and extensions
+RUN pip install -U "autogen-agentchat" "autogen-ext[ollama]"
+RUN pip install -U "autogenstudio"
+
+# Expose port 8080 for the AutoGen Studio UI
+EXPOSE 8080
+
+# Set an environment variable (example placeholder)
+ENV NAME World
+
+# Command to start AutoGen Studio on port 8080
+CMD ["autogenstudio", "ui", "--port", "8080", "--appdir", "./my-app"]
